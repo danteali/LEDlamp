@@ -1,11 +1,11 @@
-This set of files are for use in the LED Lamp project documented here (https://www.mc-guinness.co.uk/blog/?p=331&preview=true).
+This set of files are for use in the LED Lamp project documented here (https://www.mc-guinness.co.uk/blog/20160226/make-an-led-lamp-with-raspberry-pi-hyperion-and-ws2801-leds).
  
-You should review the code in the scripts to understand what it is doing before you run it. I have commented (perhaps overly so!) the code to explain what it does. You’ll also need to amend a variable at the top of some of the scripts to make sure they are pointing at the correct filesystem location.
+You should review the code in the scripts to understand what it is doing before you run it. I have commented (perhaps overly so!) the code to explain what it does. Youâ€™ll also need to amend a variable at the top of some of the scripts to make sure they are pointing at the correct filesystem location.
  
 In short, this code will:
 1. Install and set up Hyperion on the Pi to run your LEDs. This script also contains details of what to add to your /etc/rc.local file to start LEDs at boot time and the other monitoring scripts below.
 2. On start up of the Pi it will turn on the LEDs at a pre-defined customisable colour (instructions on adding the startup jobs are in the /hyperion/hyperion_setup.sh file).
-3. Start a monitor to watch for button presses or ‘rotary encoder’ activations and cycle through the Hyperion LED effect list in order.
+3. Start a monitor to watch for button presses or â€˜rotary encoderâ€™ activations and cycle through the Hyperion LED effect list in order.
 4. Start a script (/dht11/Temp_Hum_Monitor.py) to take temperature/humidity readings every 30s (via Temp_Hum.py script).
 5. It can output the current time/date, LED effect, temperature/humidity & IP address to a connected LCD display.
 6. It can make a buzzer sound whenever the LED effects are changed.
