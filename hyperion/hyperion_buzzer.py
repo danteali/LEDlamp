@@ -15,11 +15,13 @@
 
 import RPi.GPIO as GPIO   #import the GPIO library
 import time               #import the time library
+from sys import argv      #to get command line arguements
+
 
 class Buzzer(object):
  def __init__(self):
   GPIO.setmode(GPIO.BCM)  
-  self.buzzer_pin = 18 #set to GPIO pin 
+  self.buzzer_pin = 16 #set to GPIO pin 
   GPIO.setup(self.buzzer_pin, GPIO.IN)
   GPIO.setup(self.buzzer_pin, GPIO.OUT)
   #print("buzzer ready")
@@ -38,10 +40,10 @@ class Buzzer(object):
   cycles = int(duration * pitch)   #the number of waves to produce is the duration times the frequency
 
   for i in range(cycles):    #start a loop from 0 to the variable "cycles" calculated above
-   GPIO.output(self.buzzer_pin, True)   #set pin 18 to high
-   time.sleep(delay)    #wait with pin 18 high
-   GPIO.output(self.buzzer_pin, False)    #set pin 18 to low
-   time.sleep(delay)    #wait with pin 18 low
+   GPIO.output(self.buzzer_pin, True)   #set pin to high
+   time.sleep(delay)    #wait with pin high
+   GPIO.output(self.buzzer_pin, False)    #set pin to low
+   time.sleep(delay)    #wait with pin low
 
  def play(self, tune):
   GPIO.setmode(GPIO.BCM)
@@ -104,7 +106,12 @@ if __name__ == "__main__":
   # This line allows user selection of the tunes above. I'm commenting out 
   # and setting tune = 6 for my own user defined 'tune'.
   #a = input("Enter Tune number 1-5:")
+  if len(argv) == 1:
+    tunes = 6
+  else:
+    firstarg = argv[1]
+
+  print "Playing tune defn: ",tunes
   GPIO.setwarnings(False)
-  a = 6
   buzzer = Buzzer()
-  buzzer.play(int(a))
+  buzzer.play(int(tunes))
