@@ -32,7 +32,7 @@ import shutil
 import io
 
 #set to location of the downloaded hyperion scripts
-hyperion_dir="/root/RaspPi/Setup/hyperion"
+hyperion_dir="/home/pi/Setup/Guides/hyperion"
 
 # Copy rotary class to /home/pi if it's not there already
 if os.path.isfile("/home/pi/rotary_class.py"):
@@ -47,8 +47,8 @@ from rotary_class import RotaryEncoder
 # Define GPIO inputs (BCM) - rotary_class.py sets GPIO pin mode to BCM
 # Change these to whatever you want to use
 PIN_A = 17
-PIN_B = 27     
-BUTTON = 22    
+PIN_B = 27
+BUTTON = 22
 
 # This is the event callback routine to handle events
 def switch_event(event):
@@ -59,24 +59,24 @@ def switch_event(event):
               time.sleep(0.3)
         elif event == RotaryEncoder.ANTICLOCKWISE:
               print "Anti-Clockwise"    # For testing - will dispaly if you run python script from command line
-              subprocess.call([hyperion_dir +"/hyperion_effect_scroll.sh", " down"])
+              subprocess.call([hyperion_dir +"/hyperion_effect_scroll.sh", " antic"])
               #slight pause to debounce
               time.sleep(0.3)
         elif event == RotaryEncoder.BUTTONDOWN:
               print "Button pressed down"    # For testing - will dispaly if you run python script from command line
-              # If the LEDs are on and you click the button it will turn them off and set the same temporary 
+              # If the LEDs are on and you click the button it will turn them off and set the same temporary
               # 'flag' file as used when we reboot the Pi. This will let the 'hyperion_effect_scroll.sh' script
               # pick up from where we left off when we turn it back on. To determine whether the LEDs are on or
-              # not it checks for the existance of teh 'flag' file since this will have been set previously 
+              # not it checks for the existance of teh 'flag' file since this will have been set previously
               # if we turned them off. Note that after a reboot the 'flag' file will exist too so the first click
               # of the encoder will turn on the LEDs at the last used effect from before reboot.
-              if os.path.isfile("/hyperion.boot"):
+              if os.path.isfile("/home/pi/hyperion.boot"):
                 # LEDs are off so call 'hyperion_effect_scroll.sh' to turn them on
                 subprocess.call(hyperion_dir +"/hyperion_effect_scroll.sh", shell=False)
               else:
-                # LEDs are on so let's turn them off, and create the 'flag' file 
-                subprocess.call("hyperion-remote "+"--priority 50 --clearall", shell=True)
-                open('/hyperion.boot', 'a').close()
+                # LEDs are on so let's turn them off, and create the 'flag' file
+                subprocess.call("hyperion-remote "+"--clearall", shell=True)
+                open('/home/pi/hyperion.boot', 'a').close()
                 # Write LED off to file for display on LCD if in use
                 f = io.open( hyperion_dir +"/hyperion_effect_scroll.effect", 'wb' )
                 f.truncate()
