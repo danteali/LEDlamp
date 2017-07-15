@@ -17,8 +17,6 @@
 # The power pack I'm using is this one:
 # https://www.amazon.co.uk/Anker-13000mAh-Portable-External-Technology/dp/B00BQ5KHJW
 
-# Make sure the hyperion_config_example.txt file is set up for your specific LED configuration.
-
 # Note also that the wifi dongle I'm using is this one:
 # http://www.amazon.co.uk/Edimax-EW-7811UN-150Mbps-Wireless-Adapter/dp/B003MTTJOY
 
@@ -62,7 +60,7 @@ set -e
 # Remember to update location variables in other bash and python scripts too.
 export HOME_DIR="/home/pi"
 export SETUP_DIR="$HOME_DIR/Setup/Guides"
-export HYPERION_DIR="$SETUP_DIR/hyperion"
+export HYPERION_DIR="$SETUP_FILES/hyperion"
 
 
 #Hyperion setup
@@ -94,7 +92,8 @@ sudo wget https://raw.githubusercontent.com/hyperion-project/hyperion/master/con
 # Copy our config file to correct location
 cp $HYPERION_DIR/hyperion_config_example.txt /etc/hyperion/hyperion.config.json
 # Restart Hyperion
-sudo systemctl stop hyperion && sudo systemctl start hyperion
+sudo systemctl stop hyperion
+sudo systemctl start hyperion
 
 echo "Testing hyperion...\n"
   hyperion-remote --priority 30 --color red --duration 5000
@@ -128,23 +127,19 @@ echo "\n${green}You may now need to reboot the RPi to enable SPI interface...${r
 
 # Add this to /etc/rc.local above the 'exit 0' line:
 if [ -f /etc/init.d/hyperion ]; then
-  sudo cp /etc/rc.local /etc/rc.local
-  sudo sed -i '/exit 0/d' /etc/rc.local
-  echo "" | sudo tee -a /etc/rc.local
-  echo "### HYPERION LED SECTION ###" | sudo tee -a /etc/rc.local
-  echo "sudo systemctl stop hyperion" | sudo tee -a /etc/rc.local
-  echo "sudo systemctl start hyperion" | sudo tee -a /etc/rc.local
-  echo "#sleep 5" | sudo tee -a /etc/rc.local
-  echo "# Set starting colour to whitey-blue" | sudo tee -a /etc/rc.local
-  echo "hyperion-remote --priority 50 --color A5EFFA" | sudo tee -a /etc/rc.local
-  echo "touch $HOME_DIR/hyperion.boot" | sudo tee -a /etc/rc.local
-  echo "python $HYPERION_DIR/hyperion_button_monitor.py &    # Change this to where ever you saved the downloaded scripts" | sudo tee -a /etc/rc.local
-  echo "python $HYPERION_DIR/hyperion_rotary_encoder.py &    # Change this to where ever you saved the downloaded scripts" | sudo tee -a /etc/rc.local
-  echo "#python $SETUP_DIR/lcd/Time_RotateMsg.py &    # Change this to where you saved the downloaded lcd scripts" | sudo tee -a /etc/rc.local
-  echo  "exit 0" | sudo tee -a /etc/rc.local
+    echo "" | sudo tee -a /etc/rc.local
+    echo "### HYPERION LED SECTION ###" | sudo tee -a /etc/rc.local
+    echo "sudo systemctl stop hyperion" | sudo tee -a /etc/rc.local
+    echo "sudo systemctl start hyperion" | sudo tee -a /etc/rc.local
+    # echo "sleep 5" | sudo tee -a /etc/rc.local
+    echo "# Set starting colour to whitey-blue" | sudo tee -a /etc/rc.local
+    echo "hyperion-remote --priority 50 --color A5EFFA" | sudo tee -a /etc/rc.local
+    echo "touch $HOME_DIR/hyperion.boot" | sudo tee -a /etc/rc.local
+    echo "python $HYPERION_DIR/hyperion_button_monitor.py &    # Change this to where ever you saved the downloaded scripts" | sudo tee -a /etc/rc.local
+    echo "python $HYPERION_DIR/hyperion_rotary_encoder.py &    # Change this to where ever you saved the downloaded scripts" | sudo tee -a /etc/rc.local
+    echo "#python $SETUP_DIR/lcd/Time_RotateMsg.py &    # Change this to where you saved the downloaded lcd scripts" | sudo tee -a /etc/rc.local
 fi
-#Make effect scroll bash script executable
-chmod +x $HYPERION_DIR/hyperion_effect_scroll.sh
+
 
 # To do...
 
